@@ -9,6 +9,7 @@ class MemoryMatrix extends Component {
     highlightedIndices: [],
     clickedIndex: new Set(),
     myArray: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    cells: 3,
   }
 
   componentDidMount() {
@@ -20,9 +21,9 @@ class MemoryMatrix extends Component {
   }
 
   getGridButtons = () => {
-    const {myArray} = this.state
+    const {myArray, cells} = this.state
     const shuffledArray = myArray.sort(() => Math.random() - 0.5)
-    const slicedArray = shuffledArray.slice(0, 3)
+    const slicedArray = shuffledArray.slice(0, cells)
     this.setState({highlightedIndices: slicedArray, clickedIndex: new Set()})
     this.intervalId = setTimeout(this.clearHighlightIndices, 3000)
     console.log('New grid buttons:', slicedArray)
@@ -58,6 +59,7 @@ class MemoryMatrix extends Component {
       console.log('matched')
       clickedIndex.add(index)
       this.setState({clickedIndex})
+      console.log(clickedIndex)
     } else {
       console.log('not matched')
     }
