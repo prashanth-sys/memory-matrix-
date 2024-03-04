@@ -10,6 +10,7 @@ class MemoryMatrix extends Component {
     clickedIndex: new Set(),
     myArray: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     cells: 3,
+    level: 1,
   }
 
   componentDidMount() {
@@ -39,7 +40,13 @@ class MemoryMatrix extends Component {
     const numCells = myArray.length
     if (clickedIndex.size === numCells) {
       console.log('Proceed to next level')
-      this.startNextLevel()
+      this.setState(
+        prevState => ({
+          level: prevState.level + 1,
+          cells: prevState.cells + 1,
+        }),
+        this.getGridButtons(),
+      )
     } else {
       this.intervalId = setTimeout(this.getGridButtons, 6000)
     }
@@ -52,8 +59,9 @@ class MemoryMatrix extends Component {
   }
 
   onClickCell = index => {
+    console.log(index + 1)
     const {highlightedIndices, clickedIndex} = this.state
-    const isMatch = highlightedIndices.includes(index)
+    const isMatch = highlightedIndices.includes(index + 1)
 
     if (isMatch) {
       console.log('matched')
@@ -66,7 +74,13 @@ class MemoryMatrix extends Component {
   }
 
   render() {
-    const {highlightedIndices, clickedIndex, isModelOpen, myArray} = this.state
+    const {
+      highlightedIndices,
+      clickedIndex,
+      isModelOpen,
+      myArray,
+      level,
+    } = this.state
 
     return (
       <div className="memory-matrix-container">
@@ -88,7 +102,7 @@ class MemoryMatrix extends Component {
         </div>
         <h1 className="game-heading">Memory Matrix</h1>
         <div className="level-container">
-          <p className="level">Level-1</p>
+          <p className="level">Level-{level}</p>
           <p className="level">Max Level-00</p>
         </div>
         <div className="game-container">
